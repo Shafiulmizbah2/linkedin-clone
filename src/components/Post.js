@@ -1,4 +1,4 @@
-import React from "react";
+import React, { forwardRef } from "react";
 import { styled } from "@mui/material/styles";
 import { Box } from "@mui/system";
 import { Avatar, Button, Paper, Typography } from "@mui/material";
@@ -12,6 +12,8 @@ const PostWrapper = styled(Paper)(({ theme }) => ({
   marginBottom: "1rem",
   width: "80%",
   minWidth: "200px",
+  marginRight: "auto",
+  marginLeft: "auto",
 }));
 
 const PostHeader = styled(Box)(({ theme }) => ({
@@ -30,9 +32,9 @@ const PostHeaderInfo = styled(Box)(({ theme }) => ({
 }));
 const PostBody = styled(Box)(({ theme }) => ({}));
 
-function Post({ name, description, post, photoUrl }) {
+const Post = forwardRef(({ name, description, post, photoUrl }, ref) => {
   return (
-    <PostWrapper>
+    <PostWrapper ref={ref}>
       <PostHeader>
         <Avatar src={photoUrl} alt="Post author" />
         <PostHeaderInfo>
@@ -65,6 +67,6 @@ function Post({ name, description, post, photoUrl }) {
       </ButtonWrapper>
     </PostWrapper>
   );
-}
+});
 
 export default Post;

@@ -10,6 +10,7 @@ import { db } from "../firebase";
 import firebase from "firebase";
 import { useSelector } from "react-redux";
 import { selectUser } from "../features/userSlice";
+import FlipMove from "react-flip-move";
 
 const FeedContainer = styled("div")(({ theme }) => ({
   backgroundColor: "transparent",
@@ -24,6 +25,10 @@ const FeedContainer = styled("div")(({ theme }) => ({
 
   "&::-webkit-scrollbar": {
     display: "none",
+  },
+
+  [theme.breakpoints.down("md")]: {
+    flex: 1,
   },
 }));
 
@@ -56,7 +61,7 @@ const InputOptionWrapper = styled(Box)(({ theme }) => ({
   },
 }));
 
-function Feed() {
+const Feed = () => {
   const [posts, setPost] = useState([]);
   const [input, setInput] = useState("");
   const user = useSelector(selectUser);
@@ -136,19 +141,20 @@ function Feed() {
           </InputOptionWrapper>
         </Grid>
       </Paper>
-
-      {posts.length > 0 &&
-        posts.map(({ id, data: { name, description, post, photoUrl } }) => (
-          <Post
-            key={id}
-            name={name}
-            description={description}
-            post={post}
-            photoUrl={photoUrl}
-          />
-        ))}
+      <FlipMove>
+        {posts.length > 0 &&
+          posts.map(({ id, data: { name, description, post, photoUrl } }) => (
+            <Post
+              key={id}
+              name={name}
+              description={description}
+              post={post}
+              photoUrl={photoUrl}
+            />
+          ))}
+      </FlipMove>
     </FeedContainer>
   );
-}
+};
 
 export default Feed;

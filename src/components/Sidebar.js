@@ -13,6 +13,11 @@ const SidebarContainer = styled("div")(({ theme }) => ({
   border: `1px solid ${theme.palette.background.paper}`,
   borderRadius: "1rem 1rem 0 0",
   overflow: "hidden",
+  marginTop: "2vh",
+
+  [theme.breakpoints.down("md")]: {
+    display: "none",
+  },
 }));
 
 const Cover = styled("img")(({ theme }) => ({

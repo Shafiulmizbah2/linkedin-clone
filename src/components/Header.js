@@ -104,31 +104,26 @@ export default function Header() {
       icon: HomeIcon,
       title: "Home",
       badge: 0,
-      onclick: () => history.push("/"),
     },
     {
       icon: GroupIcon,
       title: "My Network",
       badge: 0,
-      onclick: () => history.push("/mynetwork"),
     },
     {
       icon: WorkIcon,
       title: "Jobs",
       badge: 0,
-      onclick: () => history.push("/jobs"),
     },
     {
       icon: TextsmsIcon,
       title: "Messaging",
       badge: 0,
-      onclick: () => history.push("/message"),
     },
     {
       icon: NotificationsIcon,
       title: "Notifications",
       badge: 2,
-      onclick: () => history.push("/notifications"),
     },
   ];
 
@@ -168,6 +163,7 @@ export default function Header() {
       }}
       open={isMenuOpen}
       onClose={handleMenuClose}
+      sx={{ padding: "2rem" }}
     >
       <MenuItem onClick={logoutApp}>Log out</MenuItem>
     </Menu>
@@ -237,7 +233,6 @@ export default function Header() {
                   backgroundColor: "transparent",
                   paddingBottom: "none",
                 }}
-                onClick={item.onclick}
               >
                 <Badge badgeContent={item.badge} color="error">
                   <item.icon sx={{ height: 20, width: 20 }} />

@@ -14,9 +14,14 @@ import Register from "./components/Register";
 import { auth } from "./firebase";
 
 const AppBody = styled("div")(({ theme }) => ({
+  position: "sticky",
+  top: 0,
+  left: 0,
+  right: 0,
   height: "90vh",
   backgroundColor: theme.palette.background.default,
   display: "flex",
+  maxWidth: "120rem",
 }));
 
 function App({ history }) {
