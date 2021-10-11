@@ -24,6 +24,7 @@ const PostHeader = styled(Box)(({ theme }) => ({
 
 const ButtonWrapper = styled(Box)(({ theme }) => ({
   display: "flex",
+  flexWrap: "wrap",
   justifyContent: "space-between",
 }));
 
