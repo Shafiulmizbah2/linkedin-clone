@@ -1,6 +1,8 @@
 import React from "react";
 import { styled } from "@mui/material/styles";
 import { Avatar, Typography, Grid, Paper, Box } from "@mui/material";
+import { useSelector } from "react-redux";
+import { selectUser } from "../features/userSlice";
 
 const SidebarContainer = styled("div")(({ theme }) => ({
   backgroundColor: "transparent",
@@ -25,6 +27,8 @@ const ProfileImage = styled(Avatar)(({ theme }) => ({
 }));
 
 function Sidebar() {
+  const user = useSelector(selectUser);
+
   const recentItem = [
     "reactjs",
     "programing",
@@ -38,19 +42,21 @@ function Sidebar() {
       <Paper elevation={0}>
         <Cover alt="cover img" src="/bg.jpeg" />
         <ProfileImage
-          alt="Travis Howard"
-          src="/user.png"
+          alt="me"
+          src={user.photoUrl && user.photoUrl[0]}
           sx={{ width: 60, height: 60 }}
-        />
+        >
+          {user.displayName && user.displayName[0]}
+        </ProfileImage>
         <Grid container alignItems="center" justifyContent="center">
           <Box sx={{ width: "100%", textAlign: "center" }}>
             <Typography variant="h6" sx={{ fontWeight: "bold" }}>
-              Shafiul Azim
+              {user.displayName}
             </Typography>
           </Box>
           <Box sx={{ width: "100%", textAlign: "center" }}>
             <Typography variant="caption" sx={{ fontWeight: "bold" }}>
-              shafiulmizbah2@gmail.com
+              {user.email}
             </Typography>
           </Box>
         </Grid>

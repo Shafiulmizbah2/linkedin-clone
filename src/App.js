@@ -1,41 +1,71 @@
-import React from "react";
-import "./App.css";
+import React, { useEffect } from "react";
 import { styled } from "@mui/material/styles";
 
-import { initializeApp } from "firebase/app";
 import Header from "./components/Header";
 import Sidebar from "./components/Sidebar";
 import Feed from "./components/Feed";
 import Widget from "./components/widget";
+import { useDispatch, useSelector } from "react-redux";
+import { login, logout, selectUser } from "./features/userSlice";
+import Login from "./components/Login";
 
-const firebaseConfig = {
-  apiKey: "AIzaSyCsEOvgBIV8pwx3YtuWgxHyOG6TSDn4ftc",
-  authDomain: "linkedin-clone-144b3.firebaseapp.com",
-  projectId: "linkedin-clone-144b3",
-  storageBucket: "linkedin-clone-144b3.appspot.com",
-  messagingSenderId: "328057650158",
-  appId: "1:328057650158:web:c0af01f1bc69e32f06acff",
-};
-
-// Initialize Firebase
-const app = initializeApp(firebaseConfig);
+import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
+import Register from "./components/Register";
+import { auth } from "./firebase";
 
 const AppBody = styled("div")(({ theme }) => ({
-  minHeight: "90vh",
+  height: "90vh",
   backgroundColor: theme.palette.background.default,
   display: "flex",
 }));
 
-function App() {
+function App({ history }) {
+  const user = useSelector(selectUser);
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    auth.onAuthStateChanged((userAuth) => {
+      if (userAuth) {
+        //user logged in
+        dispatch(
+          login({
+            email: userAuth.email,
+            uid: userAuth.uid,
+            photoURL: userAuth.photoURL,
+            displayName: userAuth.displayName,
+          })
+        );
+      } else {
+        //user logged out
+        dispatch(logout());
+      }
+    });
+  }, []);
+
   return (
-    <div className="app">
-      <Header />
-      <AppBody>
-        <Sidebar />
-        <Feed />
-        <Widget />
-      </AppBody>
-    </div>
+    <Router>
+      <Switch>
+        {!user ? (
+          <>
+            <Route path="/" exact>
+              <Login />
+            </Route>
+            <Route path="/register" exact>
+              <Register />
+            </Route>
+          </>
+        ) : (
+          <Route path="/" exact>
+            <Header />
+            <AppBody>
+              <Sidebar />
+              <Feed />
+              <Widget />
+            </AppBody>
+          </Route>
+        )}
+      </Switch>
+    </Router>
   );
 }
 

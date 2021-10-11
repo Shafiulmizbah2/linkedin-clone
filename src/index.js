@@ -18,7 +18,7 @@ let theme = createTheme({
     },
     background: {
       paper: "#ffffff",
-      default: "#f8f8f8",
+      default: "#f1f1f1",
     },
   },
 });

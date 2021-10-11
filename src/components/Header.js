@@ -19,6 +19,9 @@ import TextsmsIcon from "@mui/icons-material/Textsms";
 import NotificationsIcon from "@mui/icons-material/Notifications";
 import MenuIcon from "@mui/icons-material/Menu";
 import { Avatar } from "@mui/material";
+import { logout, selectUser } from "../features/userSlice";
+import { auth } from "../firebase";
+import { useDispatch, useSelector } from "react-redux";
 
 const StyledAppbar = styled(AppBar)(({ theme }) => ({
   boxShadow: theme.shadows[1],
@@ -43,7 +46,7 @@ const Search = styled("div")(({ theme }) => ({
 const Logo = styled("img")(({ theme }) => ({
   objectFit: "contain",
   height: "4rem",
-  padding: "1rem",
+  padding: ".5rem",
 }));
 
 const SearchIconWrapper = styled("div")(({ theme }) => ({
@@ -87,6 +90,14 @@ export default function Header() {
   const [anchorEl, setAnchorEl] = useState(null);
   const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = useState(null);
   const history = useHistory();
+  const dispatch = useDispatch();
+  const user = useSelector(selectUser);
+
+  const logoutApp = () => {
+    handleMenuClose();
+    dispatch(logout());
+    auth.signOut();
+  };
 
   const MenuItems = [
     {
@@ -142,26 +153,25 @@ export default function Header() {
   };
 
   const menuId = "primary-search-account-menu";
-  // const renderMenu = (
-  //   <Menu
-  //     anchorEl={anchorEl}
-  //     anchorOrigin={{
-  //       vertical: "top",
-  //       horizontal: "right",
-  //     }}
-  //     id={menuId}
-  //     keepMounted
-  //     transformOrigin={{
-  //       vertical: "top",
-  //       horizontal: "right",
-  //     }}
-  //     open={isMenuOpen}
-  //     onClose={handleMenuClose}
-  //   >
-  //     <MenuItem onClick={handleMenuClose}>Profile</MenuItem>
-  //     <MenuItem onClick={handleMenuClose}>My account</MenuItem>
-  //   </Menu>
-  // );
+  const renderMenu = (
+    <Menu
+      anchorEl={anchorEl}
+      anchorOrigin={{
+        vertical: "top",
+        horizontal: "right",
+      }}
+      id={menuId}
+      keepMounted
+      transformOrigin={{
+        vertical: "top",
+        horizontal: "right",
+      }}
+      open={isMenuOpen}
+      onClose={handleMenuClose}
+    >
+      <MenuItem onClick={logoutApp}>Log out</MenuItem>
+    </Menu>
+  );
 
   const mobileMenuId = "primary-search-account-menu-mobile";
   const renderMobileMenu = (
@@ -201,7 +211,7 @@ export default function Header() {
     <Box sx={{ flexGrow: 1 }}>
       <StyledAppbar position="sticky">
         <Toolbar variant="dense">
-          <Logo src="./linkedin.png" alt="linkedin logo" />
+          <Logo src="./logo.png" alt="linkedin logo" />
           <Search>
             <SearchIconWrapper>
               <SearchIcon color="default" size={10} />
@@ -236,7 +246,23 @@ export default function Header() {
               </StyledMenuItem>
             ))}
 
-            <Avatar alt="me" src="/img.png" sx={{ width: 40, height: 40 }} />
+            <IconButton
+              size="large"
+              edge="end"
+              aria-label="account of current user"
+              aria-controls={menuId}
+              aria-haspopup="true"
+              onClick={handleProfileMenuOpen}
+              color="inherit"
+            >
+              <Avatar
+                alt="me"
+                src={user.photoUrl && user.photoUrl}
+                sx={{ width: 40, height: 40 }}
+              >
+                {user.displayName && user.displayName[0]}
+              </Avatar>
+            </IconButton>
           </Box>
           <Box sx={{ display: { xs: "flex", md: "none" } }}>
             <IconButton
@@ -253,7 +279,7 @@ export default function Header() {
         </Toolbar>
       </StyledAppbar>
       {renderMobileMenu}
-      {/* {renderMenu} */}
+      {renderMenu}
     </Box>
   );
 }
